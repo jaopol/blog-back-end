@@ -49,7 +49,7 @@ public class UserPost implements Serializable {
 	@Column( name = "image", nullable = true, length = 5000 )
 	private Byte[] image;	
 	
-	@ManyToOne( fetch = FetchType.LAZY ,cascade = CascadeType.ALL, targetEntity = BlogUser.class )
+	@ManyToOne( fetch = FetchType.EAGER ,cascade = CascadeType.ALL, targetEntity = BlogUser.class )
 	@JoinColumn( name = "id_blog_user" )
 	private BlogUser blogUser;
 	

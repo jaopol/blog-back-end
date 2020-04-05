@@ -1,5 +1,6 @@
 package br.com.blog.services.imp;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,16 @@ public class UserPostServiceImp implements UserPostService {
 	 */
 	@Override
 	public Optional<UserPost> addPost(UserPost post) {
-		return Optional.ofNullable( this.postRepository.save( post ) );
+		return Optional.ofNullable( postRepository.save( post ) );
+	}
+
+
+	/**
+	 *Retorna todos os posts do blog
+	 */
+	@Override
+	public Optional<List<UserPost>> findAll() {
+		return Optional.ofNullable( postRepository.findAll() );
 	}
 
 }

@@ -1,9 +1,14 @@
 package br.com.blog.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +39,49 @@ public class UserPostController {
 		
 		Response<UserPostDTO> response = new Response<UserPostDTO>();
 		
-		Optional<UserPost> result = userPostService.addPost( userPostConverter.transformDtoToEntity( userPostDTO ) );
-		response.setData( userPostConverter.transformEntityToDto( result.get() ) );
+		try {
+			Optional<UserPost> result = userPostService.addPost( userPostConverter.transformDtoToEntity( userPostDTO ) );
+			response.setData( userPostConverter.transformEntityToDto( result.get() ) );
+			
+			return ResponseEntity.ok( response );
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setContent( Arrays.asList( e.getMessage() ) );
+			
+			return ResponseEntity.badRequest().body( response );
+		}
 
-		return ResponseEntity.ok( response );
+	}
+	
+	@ApiOperation( value = "Retorna todos os posts do blog" )
+	@GetMapping( name = "/findAll" )
+	public ResponseEntity<Response<List<UserPostDTO>>> findAll(){
+		
+		Response<List<UserPostDTO>> response = new Response<List<UserPostDTO>>();
+		Optional<List<UserPost>> listUserPost = userPostService.findAll();
+		try {
+			if ( !listUserPost.isPresent() || CollectionUtils.isEmpty( listUserPost.get() ) ) {
+				List<String> listaErros = Arrays.asList("Nenhum post publicado!");
+				response.setContent( listaErros );
+				
+				return ResponseEntity.badRequest().body( response );
+			}
+			response.setData( transformListEntityToDto( listUserPost.get() ) );
+			return ResponseEntity.ok(response);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			response.setContent( Arrays.asList( e.getMessage() ) );
+			
+			return ResponseEntity.badRequest().body( response );
+		}
+	}
+	
+	private List<UserPostDTO> transformListEntityToDto(List<UserPost> listUserPost) {
 
+		return listUserPost.stream().map( userPost -> userPostConverter.transformEntityToDto( userPost ) )
+				.collect( ArrayList::new, ArrayList::add, ArrayList::addAll );
 	}
 
 }

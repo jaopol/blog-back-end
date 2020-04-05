@@ -6,9 +6,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Response {
+public class Response<T> {
 
-	private Integer stausCode;
+	private T data;
 	private List<String> content;
 	
 	

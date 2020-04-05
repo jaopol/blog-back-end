@@ -3,7 +3,6 @@ package br.com.blog.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,7 +48,7 @@ public class UserPost implements Serializable {
 	@Column( name = "image", nullable = true, length = 5000 )
 	private Byte[] image;	
 	
-	@ManyToOne( fetch = FetchType.EAGER ,cascade = CascadeType.ALL, targetEntity = BlogUser.class )
+	@ManyToOne( fetch = FetchType.EAGER , targetEntity = BlogUser.class )
 	@JoinColumn( name = "id_blog_user" )
 	private BlogUser blogUser;
 	

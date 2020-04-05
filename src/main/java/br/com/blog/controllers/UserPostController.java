@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.blog.converter.UserPostConverter;
@@ -65,17 +68,39 @@ public class UserPostController {
 				List<String> listaErros = Arrays.asList("Nenhum post publicado!");
 				response.setContent( listaErros );
 				
-				return ResponseEntity.badRequest().body( response );
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
 			response.setData( transformListEntityToDto( listUserPost.get() ) );
 			return ResponseEntity.ok(response);
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
 			response.setContent( Arrays.asList( e.getMessage() ) );
-			
 			return ResponseEntity.badRequest().body( response );
 		}
+	}
+	
+	@ApiOperation( value = "Exclui um Post específico" )
+	@DeleteMapping( name="/delete", value = "/{id}" )
+	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id ) {
+		
+		Response<UserPostDTO> response = new Response<UserPostDTO>();
+		
+		try {
+			
+			Boolean removed = userPostService.deleteUserPost( id );
+			
+			if( removed ) {
+				response.setContent( Arrays.asList( "Post excluído com sucesso!" ) );
+				return ResponseEntity.ok( response ); 
+			}
+			response.setContent( Arrays.asList( "Post não encontrado!" ) );
+			return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+
+		} catch (Exception e) {
+			response.setContent( Arrays.asList( e.getMessage() ) );
+			return 	ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY ).body( response );
+		}
+		
 	}
 	
 	private List<UserPostDTO> transformListEntityToDto(List<UserPost> listUserPost) {

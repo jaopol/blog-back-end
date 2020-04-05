@@ -38,4 +38,21 @@ public class UserPostServiceImp implements UserPostService {
 		return Optional.ofNullable( postRepository.findAll() );
 	}
 
+
+	/**
+	 *Deleta um Post específico
+	 */
+	@Override
+	public Boolean deleteUserPost(Long id) {
+
+		Optional<UserPost> userPost = postRepository.findById( id );
+		
+		if( userPost.isPresent() ) {
+			postRepository.delete( userPost.get() );
+			return Boolean.TRUE;
+		}
+		
+		return Boolean.FALSE;
+	}
+
 }

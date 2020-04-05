@@ -24,5 +24,13 @@ public interface UserPostService {
 	 * @return
 	 */
 	Optional<List<UserPost>> findAll();
+
+	/**
+	 * Exclui um Post expecífico
+	 * @param id
+	 * @return
+	 */
+	Boolean deleteUserPost(Long id);
+
 	
 }

@@ -26,11 +26,18 @@ public interface CommentaryService {
 	Optional<List<Commentary>> findAll();
 
 	/**
-	 * Exclui um comentários expecífico
-	 * @param id
+	 * Exclui um comentários específico
+	 * @param commentary
 	 * @return Boolean - true : excluido, false : não excluido
 	 */
-	Boolean deleteCommentary( Long id );
+	Boolean deleteCommentary( Commentary commentary );
+
+	/**
+	 * Recupera um a comentário especifico
+	 * @param id
+	 * @return
+	 */
+	Optional<Commentary> findById( Long id );
 
 
 	

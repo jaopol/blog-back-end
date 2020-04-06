@@ -30,7 +30,7 @@ public interface UserPostService {
 	 * @param id
 	 * @return Boolean - true : excluido, false : não excluido
 	 */
-	Boolean deleteUserPost( Long id );
+	Boolean deleteUserPost( UserPost userPost );
 
 	/**
 	 * Atualiza o post do usuario

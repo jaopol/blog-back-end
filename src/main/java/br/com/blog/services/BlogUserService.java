@@ -18,4 +18,6 @@ public interface BlogUserService {
 	 */
 	Optional<BlogUser>  addBlogUser( BlogUser blogUser );
 	
+	Optional<BlogUser>  findByLogin( String login );
+	
 }

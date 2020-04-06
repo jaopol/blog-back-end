@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.blog.converter.CommentaryConverter;
 import br.com.blog.dtos.CommentaryDTO;
 import br.com.blog.dtos.UserPostDTO;
+import br.com.blog.model.BlogUser;
 import br.com.blog.model.Commentary;
 import br.com.blog.response.Response;
+import br.com.blog.services.BlogUserService;
 import br.com.blog.services.CommentaryService;
+import br.com.blog.util.UtilValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,6 +35,9 @@ public class CommentaryController {
 	
 	@Autowired
 	private CommentaryConverter commentaryConverter;
+	
+	@Autowired
+	private BlogUserService userService; 
 	
 	@ApiOperation( value = "Grava um Comentário do usário no blog" )
 	@PostMapping( name="/add" )
@@ -56,25 +62,46 @@ public class CommentaryController {
 	
 	
 	@ApiOperation( value = "Exclui um Comentário específico" )
-	@DeleteMapping( name="/delete", value = "/{id}" )
-	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id ) {
+	@DeleteMapping( name="/delete", value = "/{id}/{login}" )
+	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id, @RequestParam String login ) {
 		
 		Response<UserPostDTO> response = new Response<UserPostDTO>();
 		
 		try {
 			
-			Boolean removed = commentaryService.deleteCommentary( id );
+			Optional<Commentary> commentary = commentaryService.findById( id );
 			
-			if( removed ) {
-				response.setContent( Arrays.asList( "Comentário excluído com sucesso!" ) );
-				return ResponseEntity.ok( response ); 
+			if( !commentary.isPresent() ) {
+				response.setContent( Arrays.asList( "Comentário não encontrado!" ) );
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
-			response.setContent( Arrays.asList( "Comentário não encontrado!" ) );
-			return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+			
+			Optional<BlogUser> user = userService.findByLogin( login );
+
+			if( !user.isPresent() ) {
+				response.setContent( Arrays.asList( "Usuário não encontrado" ) );
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+			}
+			
+			if( UtilValidation.isSameUsers( user.get().getId(), commentary.get().getBlogUser().getId() ) ) {
+			
+				Boolean removed = commentaryService.deleteCommentary( commentary.get() );
+				
+				if( removed ) {
+					response.setContent( Arrays.asList( "Comentário excluído com sucesso!" ) );
+					return ResponseEntity.ok( response ); 
+				}
+				response.setContent( Arrays.asList( "Usuário não tem permissão" ) );
+				return ResponseEntity.status( HttpStatus.UNAUTHORIZED ).body( response );
+			}
+			else {
+				response.setContent( Arrays.asList( "Usuário não tem permissão" ) );
+				return ResponseEntity.status( HttpStatus.UNAUTHORIZED ).body( response );
+			}
 
 		} catch (Exception e) {
 			response.setContent( Arrays.asList( e.getMessage() ) );
-			return 	ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY ).body( response );
+			return 	ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( response );
 		}
 	}
 	

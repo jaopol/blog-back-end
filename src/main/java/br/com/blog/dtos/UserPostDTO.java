@@ -2,6 +2,7 @@ package br.com.blog.dtos;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -29,4 +30,6 @@ public class UserPostDTO implements Serializable {
 	private BlogUserDTO blogUser;
 	
 	private Date createdDate;
+	
+	private List<CommentaryDTO> listCommentaryDTO;
 }

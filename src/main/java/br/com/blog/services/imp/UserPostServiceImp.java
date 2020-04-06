@@ -43,16 +43,16 @@ public class UserPostServiceImp implements UserPostService {
 	 *Deleta um Post específico
 	 */
 	@Override
-	public Boolean deleteUserPost(Long id) {
+	public Boolean deleteUserPost( UserPost userPost ) {
 
-		Optional<UserPost> userPost = postRepository.findById( id );
-		
-		if( userPost.isPresent() ) {
-			postRepository.delete( userPost.get() );
+		try {
+			postRepository.delete( userPost );
 			return Boolean.TRUE;
 		}
+		catch (Exception e) {
+			return false;
+		}
 		
-		return Boolean.FALSE;
 	}
 
 	/**

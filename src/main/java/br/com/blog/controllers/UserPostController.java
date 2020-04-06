@@ -20,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.blog.converter.UserPostConverter;
 import br.com.blog.dtos.UserPostDTO;
+import br.com.blog.model.BlogUser;
 import br.com.blog.model.UserPost;
 import br.com.blog.response.Response;
+import br.com.blog.services.BlogUserService;
 import br.com.blog.services.UserPostService;
+import br.com.blog.util.UtilValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -36,6 +39,9 @@ public class UserPostController {
 	
 	@Autowired
 	private UserPostConverter userPostConverter;
+	
+	@Autowired
+	private BlogUserService userService;
 	
 	@ApiOperation( value = "Grava um post do usário no blog" )
 	@PostMapping( name="/add" )
@@ -71,6 +77,8 @@ public class UserPostController {
 				
 				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
+			
+			
 			response.setData( transformListEntityToDto( listUserPost.get() ) );
 			return ResponseEntity.ok(response);
 		} 
@@ -103,25 +111,47 @@ public class UserPostController {
 	}
 	
 	@ApiOperation( value = "Exclui um Post específico" )
-	@DeleteMapping( name="/delete", value = "/{id}" )
-	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id ) {
+	@DeleteMapping( name="/delete", value = "/{id}/{login}" )
+	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id, @RequestParam String login ) {
 		
 		Response<UserPostDTO> response = new Response<UserPostDTO>();
 		
 		try {
 			
-			Boolean removed = userPostService.deleteUserPost( id );
+			Optional<UserPost> userPost = userPostService.findById( id );
 			
-			if( removed ) {
-				response.setContent( Arrays.asList( "Post excluído com sucesso!" ) );
-				return ResponseEntity.ok( response ); 
+			if( !userPost.isPresent() ) {
+				response.setContent( Arrays.asList( "Post não encontrado!" ) );
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
-			response.setContent( Arrays.asList( "Post não encontrado!" ) );
-			return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+			
+			Optional<BlogUser> user = userService.findByLogin( login );
+			
+			if( !user.isPresent() ) {
+				response.setContent( Arrays.asList( "Usuário não encontrado!" ) );
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+			}
+			
+			
+			if( UtilValidation.isSameUsers( user.get().getId(), userPost.get().getBlogUser().getId() ) ) {
+			
+				Boolean removed = userPostService.deleteUserPost( userPost.get() );
+				
+				if( removed ) {
+					response.setContent( Arrays.asList( "Post excluído com sucesso!" ) );
+					return ResponseEntity.ok( response ); 
+				}
+				response.setContent( Arrays.asList( "Post não foi excluido, aconteceu algum imprevisto!" ) );
+				return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( response );
+			}
+			else {
+				response.setContent( Arrays.asList( "Usuário não tem permissão para deletar o post!" ) );
+				return ResponseEntity.status( HttpStatus.UNAUTHORIZED ).body( response );
+			}
 
 		} catch (Exception e) {
 			response.setContent( Arrays.asList( e.getMessage() ) );
-			return 	ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY ).body( response );
+			return 	ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( response );
 		}
 	}
 	
@@ -150,7 +180,6 @@ public class UserPostController {
 			response.setContent( Arrays.asList( e.getMessage() ) );
 			return 	ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( response );
 		}
-		
 	}
 
 	

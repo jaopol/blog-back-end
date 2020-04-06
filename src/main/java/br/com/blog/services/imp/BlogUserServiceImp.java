@@ -28,4 +28,13 @@ public class BlogUserServiceImp implements BlogUserService {
 		return Optional.ofNullable( this.blogUserRepository.save( blogUser ) );
 	}
 
+
+	/**
+	 *Reupera o usuario pelo login
+	 */
+	@Override
+	public Optional<BlogUser> findByLogin(String login) {
+		return Optional.ofNullable( this.blogUserRepository.findByLogin( login ) );
+	}
+
 }

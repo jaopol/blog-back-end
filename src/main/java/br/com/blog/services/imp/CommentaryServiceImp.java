@@ -31,16 +31,20 @@ public class CommentaryServiceImp implements CommentaryService {
 	}
 
 	@Override
-	public Boolean deleteCommentary(Long id) {
-		
-		Optional<Commentary> commentary = commentaryRepository.findById( id );
-		
-		if( commentary.isPresent() ) {
-			commentaryRepository.delete( commentary.get() );
+	public Boolean deleteCommentary( Commentary commentary ) {
+
+		try {
+			commentaryRepository.delete( commentary );
 			return Boolean.TRUE;
 		}
-		
-		return Boolean.FALSE;
+		catch (Exception e) {
+			return Boolean.FALSE;
+		}
+	}
+
+	@Override
+	public Optional<Commentary> findById(Long id) {
+		return commentaryRepository.findById( id );
 	}
 
 	

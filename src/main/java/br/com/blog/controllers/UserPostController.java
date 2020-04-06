@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -100,9 +101,54 @@ public class UserPostController {
 			response.setContent( Arrays.asList( e.getMessage() ) );
 			return 	ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY ).body( response );
 		}
-		
 	}
 	
+	@ApiOperation( value = "Exclui um Post específico" )
+	@PutMapping( name="/put", value = "/{id}" )
+	public ResponseEntity<Response<UserPostDTO>> updateUserPost( @RequestParam Long id, @RequestBody UserPostDTO userPostDTO ) {
+		
+		Response<UserPostDTO> response = new Response<UserPostDTO>();
+		
+		try {
+			
+			Optional<UserPost> result = userPostService.findById( id );
+			
+			if( result.isPresent() ) {
+
+				userPostService.updateUserPost( updateEntity( userPostDTO, result.get() ) );
+				response.setData( userPostConverter.transformEntityToDto( result.get() ) );
+				response.setContent( Arrays.asList( "Post atualizado com sucesso!" ) );
+				return ResponseEntity.ok( response );
+			}
+			
+			response.setContent( Arrays.asList( "Post não encontrado!" ) );
+			return ResponseEntity.ok( response );
+
+		} catch (Exception e) {
+			response.setContent( Arrays.asList( e.getMessage() ) );
+			return 	ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( response );
+		}
+		
+	}
+
+	
+	/**
+	 * Atualiza a entidade com os novos valores possíveis para update
+	 * 
+	 * @param userPostDTO
+	 * @param userPost
+	 * @return UserPost
+	 */
+	private UserPost updateEntity(UserPostDTO userPostDTO, UserPost userPost) {
+		
+		userPost.setImage( userPostDTO.getImage() );
+		userPost.setText( userPostDTO.getText() );
+		userPost.setTitle( userPostDTO.getTitle() );
+		userPost.setUrl( userPostDTO.getUrl() );
+		
+		return userPost;
+	}
+
 	private List<UserPostDTO> transformListEntityToDto(List<UserPost> listUserPost) {
 
 		return listUserPost.stream().map( userPost -> userPostConverter.transformEntityToDto( userPost ) )

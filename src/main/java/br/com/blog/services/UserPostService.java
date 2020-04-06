@@ -15,22 +15,36 @@ public interface UserPostService {
 	/**
 	 * Adiciona um post do usuário 
 	 * @param post
-	 * @return
+	 * @return UserPost
 	 */
-	Optional<UserPost>  addPost( UserPost post );
+	Optional<UserPost> addPost( UserPost post );
 
 	/**
 	 * Retorna todos os posts do blog
-	 * @return
+	 * @return List
 	 */
 	Optional<List<UserPost>> findAll();
 
 	/**
 	 * Exclui um Post expecífico
 	 * @param id
+	 * @return Boolean - true : excluido, false : não excluido
+	 */
+	Boolean deleteUserPost( Long id );
+
+	/**
+	 * Atualiza o post do usuario
+	 * @param id
+	 * @return UserPost
+	 */
+	Optional<UserPost> updateUserPost( UserPost userPost );
+
+	/**
+	 * Recupera um Post específico
+	 * @param id
 	 * @return
 	 */
-	Boolean deleteUserPost(Long id);
+	Optional<UserPost> findById( Long id );
 
 	
 }

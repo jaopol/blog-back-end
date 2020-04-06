@@ -55,4 +55,21 @@ public class UserPostServiceImp implements UserPostService {
 		return Boolean.FALSE;
 	}
 
+	/**
+	 *Atualiza o post do usuário
+	 */
+	@Override
+	public Optional<UserPost> updateUserPost(UserPost userPost) {
+		return Optional.ofNullable( postRepository.save( userPost ) );
+	}
+
+
+	/**
+	 *Recuper um post específico
+	 */
+	@Override
+	public Optional<UserPost> findById(Long id) {
+		return postRepository.findById( id );
+	}
+
 }

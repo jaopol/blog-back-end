@@ -80,6 +80,28 @@ public class UserPostController {
 		}
 	}
 	
+	@ApiOperation( value = "Retorna todos os posts do blog pelo texto informado" )
+	@GetMapping( name = "/findByText", value = "/{text}" )
+	public ResponseEntity<Response<List<UserPostDTO>>> findByText( @RequestParam String text ){
+		
+		Response<List<UserPostDTO>> response = new Response<List<UserPostDTO>>();
+		Optional<List<UserPost>> listUserPost = userPostService.findByText( text );
+		try {
+			if ( !listUserPost.isPresent() || CollectionUtils.isEmpty( listUserPost.get() ) ) {
+				List<String> listaErros = Arrays.asList("Nenhum post publicado!");
+				response.setContent( listaErros );
+				
+				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
+			}
+			response.setData( transformListEntityToDto( listUserPost.get() ) );
+			return ResponseEntity.ok(response);
+		} 
+		catch (Exception e) {
+			response.setContent( Arrays.asList( e.getMessage() ) );
+			return ResponseEntity.badRequest().body( response );
+		}
+	}
+	
 	@ApiOperation( value = "Exclui um Post específico" )
 	@DeleteMapping( name="/delete", value = "/{id}" )
 	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id ) {

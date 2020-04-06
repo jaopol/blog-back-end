@@ -72,4 +72,13 @@ public class UserPostServiceImp implements UserPostService {
 		return postRepository.findById( id );
 	}
 
+
+	/**
+	 *Recupera os Posts pelo texto
+	 */
+	@Override
+	public Optional<List<UserPost>> findByText(String text) {
+		return postRepository.findByTextLike( "%"+text+"%" );
+	}
+
 }

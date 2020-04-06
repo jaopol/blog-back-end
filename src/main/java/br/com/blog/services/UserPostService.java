@@ -46,5 +46,13 @@ public interface UserPostService {
 	 */
 	Optional<UserPost> findById( Long id );
 
+	/**
+	 * Recupera os Posts pelo texto
+	 * 
+	 * @param text
+	 * @return List
+	 */
+	Optional<List<UserPost>> findByText( String text );
+
 	
 }

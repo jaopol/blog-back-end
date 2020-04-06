@@ -2,15 +2,15 @@ package br.com.blog.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "blog_user")
-public class BlogUser implements Serializable {
+@Table(name = "commentary")
+public class Commentary implements Serializable {
 	
 	/**
 	 * 
@@ -36,24 +36,21 @@ public class BlogUser implements Serializable {
 	@Column( name = "id" )
 	private Long id;
 	
-	@Column( name = "name", nullable = false, length = 100 )
-	private String name;
+	@Column( name = "text", nullable = false, length = 2000 )
+	private String text;
 	
-	@Column( name = "login", nullable = false )
-	private String login;
-	
-	@Column( name = "password", nullable = false )
-	private String password;
 	
 	@Temporal(TemporalType.DATE)
 	@Column( name = "date_created", nullable = false )
 	private Date createdDate;
 	
-	@OneToMany( mappedBy = "blogUser", cascade = CascadeType.ALL )
-	private List<UserPost> listPost;
+	@ManyToOne( fetch = FetchType.EAGER , targetEntity = UserPost.class )
+	@JoinColumn( name = "id_user_post" )
+	private UserPost userPost;
 	
-	@OneToMany( mappedBy = "blogUser", cascade = CascadeType.ALL )
-	private List<Commentary> listCommentary;
+	@ManyToOne( fetch = FetchType.EAGER , targetEntity = BlogUser.class )
+	@JoinColumn( name = "id_blog_user" )
+	private BlogUser blogUser;
 	
 
 }

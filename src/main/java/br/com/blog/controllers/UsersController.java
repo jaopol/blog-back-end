@@ -14,6 +14,7 @@ import br.com.blog.dtos.BlogUserDTO;
 import br.com.blog.model.Users;
 import br.com.blog.response.Response;
 import br.com.blog.services.BlogUserService;
+import br.com.blog.util.UtilCryption;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -33,6 +34,8 @@ public class UsersController {
 	public ResponseEntity<Response<BlogUserDTO>> addBlogUser( @RequestBody BlogUserDTO blogUser ) {
 		
 		Response<BlogUserDTO> response = new Response<BlogUserDTO>();
+		
+		blogUser.setPassword( UtilCryption.cryptionPassword( blogUser.getPassword() ) );
 		
 		Optional<Users> result = blgoUserService.addBlogUser( blogUserConverter.transformDtoToEntity( blogUser ) );
 		response.setData( blogUserConverter.transformEntityToDto( result.get() ) );

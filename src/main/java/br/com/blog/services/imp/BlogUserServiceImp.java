@@ -25,6 +25,7 @@ public class BlogUserServiceImp implements BlogUserService {
 	 */
 	@Override
 	public Optional<Users> addBlogUser( Users blogUser ) {
+		blogUser.getPermissionDefault();
 		return Optional.ofNullable( this.blogUserRepository.save( blogUser ) );
 	}
 

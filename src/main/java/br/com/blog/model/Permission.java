@@ -2,35 +2,29 @@ package br.com.blog.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.springframework.security.core.GrantedAuthority;
 
 import lombok.Data;
 
 @Data
-@Entity
-@Table( name = "permission" )
+//TODO poderá ser persistida futuramente
+//@Entity
+//@Table( name = "permission" )
 public class Permission implements GrantedAuthority, Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
-	@Column( name = "id" )
+	//@Id
+	//@GeneratedValue( strategy = GenerationType.AUTO )
+	//@Column( name = "id" )
 	private Long id;
 	
-	@Column( name = "discription" )
+	//@Column( name = "discription" )
 	private String discription;
 	
-	@Override
+	//@Override
 	public String getAuthority() {
 		return this.discription;
 	}

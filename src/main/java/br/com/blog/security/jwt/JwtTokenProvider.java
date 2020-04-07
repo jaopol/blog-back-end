@@ -29,7 +29,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenProvider {
 	
 	@Value( "${security.jwt.token.secret-key:secret}" )
-	private String secretKey = "secret";
+	private String secretKey = "blog";
 	
 	@Value( "${security.jwt.token.expire-length:3600000}" )
 	private long validityInMilliseconds = 3600000; //1h
@@ -73,7 +73,7 @@ public class JwtTokenProvider {
 		if ( bearerToken != null && bearerToken.startsWith( "Bearer " ) ) {
 			return bearerToken.substring( 7, bearerToken.length() );
 		}		
-		return null;
+		return bearerToken;
 	}
 	
 	public boolean validateToken( String token ) throws Exception {
@@ -84,7 +84,7 @@ public class JwtTokenProvider {
 			}
 			return true;
 		} catch (JwtException | IllegalArgumentException e) {
-			throw new Exception("Expired or invalid JWT token");
+			throw new Exception("Token JWT inválido ou expirado");
 		}
 	}
 

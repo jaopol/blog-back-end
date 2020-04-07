@@ -1,6 +1,7 @@
 package br.com.blog.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -8,13 +9,9 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,10 +66,14 @@ public class Users implements UserDetails, Serializable {
 	@Column( name = "enabled" )
 	private boolean enabled;
 
+	/*
 	@ManyToMany( fetch = FetchType.EAGER  )
 	@JoinTable( name = "user_permission", joinColumns = { @JoinColumn( name = "id_user" ) },
 			inverseJoinColumns = { @JoinColumn( name = "id_permission" ) }  )
 	private List<Permission> permissions;
+	*/
+	@Transient
+	private List<Permission> permissions = new ArrayList<>() ; //Não será persistido, apenas para implementação JWT
 	
 	public List<String> getRoles(){
 		
@@ -111,6 +112,12 @@ public class Users implements UserDetails, Serializable {
 		return this.enabled;
 	}
 	
+	public void getPermissionDefault() {
+		this.accountNonExpired = true;
+		this.accountNonLocked = true;
+		this.credentialsNonExpired = true;
+		this.enabled = true;
+	}
 	
 
 }

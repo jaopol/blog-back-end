@@ -17,7 +17,7 @@ Utilizado também o Swagger para auxiliar os testes;
 
 Pra execução do projeto:
 
-<h1>Configurações de Banco</h1>
+<h3>Configurações de Banco</h3>
 Ter Postgresql instalado na máquina, acessar o client, criar o banco pelo client ou 
 executar o script abaixo para criação do banco
 

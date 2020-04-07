@@ -27,7 +27,7 @@ public class BlogUsersConverter {
 		return dto;
 	}
 
-	public Users transformDtoToEntity(BlogUserDTO dto) {
+	public Users transformDtoToEntity( BlogUserDTO dto ) {
 		
 		Users entity = new Users();
 

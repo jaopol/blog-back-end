@@ -20,9 +20,8 @@ public class CommentaryDTO implements Serializable {
 	
 	private String text;
 
-	private UserPostDTO userPostDTO;
+	private Long idUserPost;
 	
 	private Date createdDate;
-	
-	private BlogUserDTO blogUserDTO;
+
 }

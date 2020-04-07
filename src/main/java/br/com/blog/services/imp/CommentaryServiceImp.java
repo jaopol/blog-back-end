@@ -47,7 +47,9 @@ public class CommentaryServiceImp implements CommentaryService {
 		return commentaryRepository.findById( id );
 	}
 
-	
+	@Override
+	public Optional<List<Commentary>> findAllByIdPost(Long idPost) {
+		return commentaryRepository.findAllByIdPost( idPost );
+	}
 
-	
 }

@@ -39,6 +39,14 @@ public interface CommentaryService {
 	 */
 	Optional<Commentary> findById( Long id );
 
+	/**
+	 * Recupera os commentarios de um post
+	 * 
+	 * @param idPost
+	 * @return
+	 */
+	Optional<List<Commentary>> findAllByIdPost(Long idPost);
+
 
 	
 }

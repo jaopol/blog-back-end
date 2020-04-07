@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.blog.converter.CommentaryConverter;
 import br.com.blog.converter.UserPostConverter;
 import br.com.blog.dtos.UserPostDTO;
-import br.com.blog.model.Users;
+import br.com.blog.model.Commentary;
 import br.com.blog.model.UserPost;
+import br.com.blog.model.Users;
 import br.com.blog.response.Response;
 import br.com.blog.services.BlogUserService;
+import br.com.blog.services.CommentaryService;
 import br.com.blog.services.UserPostService;
 import br.com.blog.util.UtilValidation;
 import io.swagger.annotations.Api;
@@ -41,7 +44,13 @@ public class UserPostController {
 	private UserPostConverter userPostConverter;
 	
 	@Autowired
+	private CommentaryConverter commentaryConverter;
+	
+	@Autowired
 	private BlogUserService userService;
+	
+	@Autowired
+	private CommentaryService commentaryService;
 	
 	@ApiOperation( value = "Grava um post do usário no blog" )
 	@PostMapping( name="/add" )
@@ -78,8 +87,15 @@ public class UserPostController {
 				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
 			
+			List<UserPostDTO> listUserPostDTO = transformListEntityToDto( listUserPost.get() );
 			
-			response.setData( transformListEntityToDto( listUserPost.get() ) );
+			for ( UserPostDTO userPostDTO : listUserPostDTO ) {
+				Optional<List<Commentary>> listCommentary = commentaryService.findAllByIdPost( userPostDTO.getId() );
+				
+				userPostDTO.setListCommentaryDTO( commentaryConverter.transformListEntityToDto( listCommentary ) );
+			}
+			
+			response.setData( listUserPostDTO  );
 			return ResponseEntity.ok(response);
 		} 
 		catch (Exception e) {
@@ -88,6 +104,7 @@ public class UserPostController {
 		}
 	}
 	
+
 	@ApiOperation( value = "Retorna todos os posts do blog pelo texto informado" )
 	@GetMapping( name = "/findByText", value = "/{text}" )
 	public ResponseEntity<Response<List<UserPostDTO>>> findByText( @RequestParam String text ){

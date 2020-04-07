@@ -172,7 +172,7 @@ public class UserPostController {
 		}
 	}
 	
-	@ApiOperation( value = "Exclui um Post específico" )
+	@ApiOperation( value = "Edita um Post específico" )
 	@PutMapping( name="/put", value = "/{id}" )
 	public ResponseEntity<Response<UserPostDTO>> updateUserPost( @RequestParam Long id, @RequestBody UserPostDTO userPostDTO ) {
 		

@@ -1,4 +1,4 @@
-
+## Conexão esternalizada utilizada para o Heroku
 spring:
   datasource:
     url: ${JDBC_DATABASE_URL}

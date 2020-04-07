@@ -83,6 +83,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>blog-back-end</finalName>
 	</build>
 
 </project>

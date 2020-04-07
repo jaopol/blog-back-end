@@ -26,7 +26,7 @@ public class UserPostConverter {
 			dto.setText( entity.getText() );
 			dto.setUrl( entity.getUrl() );
 			dto.setBlogUser( blogUserConverter.transformEntityToDto( entity.getBlogUser() ) );
-			dto.setImage( entity.getImage() );
+			dto.setImage( entity.getImage()  );
 			dto.setCreatedDate( entity.getCreatedDate() );
 		}
 		

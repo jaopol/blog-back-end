@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import br.com.blog.model.Commentary;
 import br.com.blog.model.UserPost;
 import br.com.blog.model.Users;
 import br.com.blog.response.Response;
+import br.com.blog.security.jwt.JwtTokenProvider;
 import br.com.blog.services.BlogUserService;
 import br.com.blog.services.CommentaryService;
 import br.com.blog.services.UserPostService;
@@ -51,6 +54,9 @@ public class UserPostController {
 	
 	@Autowired
 	private CommentaryService commentaryService;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider; 
 	
 	@ApiOperation( value = "Grava um post do usário no blog" )
 	@PostMapping( name="/add" )
@@ -128,8 +134,9 @@ public class UserPostController {
 	}
 	
 	@ApiOperation( value = "Exclui um Post específico" )
-	@DeleteMapping( name="/delete", value = "/{id}/{login}" )
-	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id, @RequestParam String login ) {
+	@DeleteMapping( name="/delete", value = "/{id}" )
+	public ResponseEntity<Response<UserPostDTO>> deleteUserPost( @RequestParam Long id,
+			HttpServletRequest request, HttpServletRequest resp ) {
 		
 		Response<UserPostDTO> response = new Response<UserPostDTO>();
 		
@@ -141,6 +148,8 @@ public class UserPostController {
 				response.setContent( Arrays.asList( "Post não encontrado!" ) );
 				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
+			
+			String login = jwtTokenProvider.getUsernameByToken( request.getHeader("Authorization") );
 			
 			Optional<Users> user = userService.findByLogin( login );
 			

@@ -87,5 +87,9 @@ public class JwtTokenProvider {
 			throw new Exception("Token JWT inválido ou expirado");
 		}
 	}
+	
+	public String getUsernameByToken( String token ) {
+		return Jwts.parser().setSigningKey( secretKey ).parseClaimsJws( token ).getBody().getSubject();
+	}
 
 }

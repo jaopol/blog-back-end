@@ -21,6 +21,8 @@ Pra execução do projeto:
 Ter Postgresql instalado na máquina, acessar o client, criar o banco pelo client ou 
 executar o script abaixo para criação do banco
 
+O banco deve se chamar - blog
+
 CREATE DATABASE blog
     WITH 
     OWNER = postgres
@@ -38,8 +40,7 @@ Pode ser acessada pelo Postman, ou no navegador com swagger
     
 A API também está hospedada no Heroku, e pode ser utilizada para testes
 
-<a href="https://app-blog-back-end.herokuapp.com/swagger-ui.html">Link Heroku</a> 
-
+<a href="https://app-blog-back-end.herokuapp.com/swagger-ui.html">Link Heroku</a> - tente Login: admin e password: admin
 
 Para acessar com Swagger http://localhost:8080/swagger-ui.html
 

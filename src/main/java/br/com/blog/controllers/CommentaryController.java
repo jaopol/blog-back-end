@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.blog.converter.CommentaryConverter;
 import br.com.blog.dtos.CommentaryDTO;
 import br.com.blog.dtos.UserPostDTO;
-import br.com.blog.model.BlogUser;
+import br.com.blog.model.Users;
 import br.com.blog.model.Commentary;
 import br.com.blog.response.Response;
 import br.com.blog.services.BlogUserService;
@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api( value = "API blog - Commentários")
 @RestController
-@RequestMapping( "/commentary" )
+@RequestMapping( "/api/v1/commentary" )
 public class CommentaryController {
 	
 	@Autowired
@@ -76,7 +76,7 @@ public class CommentaryController {
 				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
 			
-			Optional<BlogUser> user = userService.findByLogin( login );
+			Optional<Users> user = userService.findByLogin( login );
 
 			if( !user.isPresent() ) {
 				response.setContent( Arrays.asList( "Usuário não encontrado" ) );

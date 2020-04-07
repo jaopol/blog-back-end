@@ -48,9 +48,9 @@ public class Commentary implements Serializable {
 	@JoinColumn( name = "id_user_post" )
 	private UserPost userPost;
 	
-	@ManyToOne( fetch = FetchType.EAGER , targetEntity = BlogUser.class )
+	@ManyToOne( fetch = FetchType.EAGER , targetEntity = Users.class )
 	@JoinColumn( name = "id_blog_user" )
-	private BlogUser blogUser;
+	private Users blogUser;
 	
 
 }

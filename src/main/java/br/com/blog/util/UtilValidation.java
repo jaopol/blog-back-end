@@ -1,5 +1,9 @@
 package br.com.blog.util;
 
+/**
+ * @author jp
+ *
+ */
 public class UtilValidation {
 
 	/**

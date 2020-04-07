@@ -51,9 +51,9 @@ public class UserPost implements Serializable {
 	@Column( name = "image", nullable = true, length = 5000 )
 	private Byte[] image;	
 	
-	@ManyToOne( fetch = FetchType.EAGER , targetEntity = BlogUser.class )
+	@ManyToOne( fetch = FetchType.EAGER , targetEntity = Users.class )
 	@JoinColumn( name = "id_blog_user" )
-	private BlogUser blogUser;
+	private Users blogUser;
 	
 	@Temporal( TemporalType.TIMESTAMP )
 	@Column( name = "created_date", nullable = true, length = 5000 )

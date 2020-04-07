@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.blog.converter.UserPostConverter;
 import br.com.blog.dtos.UserPostDTO;
-import br.com.blog.model.BlogUser;
+import br.com.blog.model.Users;
 import br.com.blog.model.UserPost;
 import br.com.blog.response.Response;
 import br.com.blog.services.BlogUserService;
@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api( value = "API blog - Post")
 @RestController
-@RequestMapping( "/userpost" )
+@RequestMapping( "/api/v1/userpost" )
 public class UserPostController {
 	
 	@Autowired
@@ -125,7 +125,7 @@ public class UserPostController {
 				return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( response );
 			}
 			
-			Optional<BlogUser> user = userService.findByLogin( login );
+			Optional<Users> user = userService.findByLogin( login );
 			
 			if( !user.isPresent() ) {
 				response.setContent( Arrays.asList( "Usuário não encontrado!" ) );

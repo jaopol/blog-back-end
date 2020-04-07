@@ -3,23 +3,23 @@ package br.com.blog.converter;
 import org.springframework.stereotype.Component;
 
 import br.com.blog.dtos.BlogUserDTO;
-import br.com.blog.model.BlogUser;
+import br.com.blog.model.Users;
 
 /**
  * @author jp
  *
  */
 @Component
-public class BlogUserConverter {
+public class UsersConverter {
 
-	public BlogUserDTO transformEntityToDto(BlogUser entity) {
+	public BlogUserDTO transformEntityToDto(Users entity) {
 
 		BlogUserDTO dto = new BlogUserDTO();
 
 		if( entity != null ) {
 			dto.setId( entity.getId() );
-			dto.setName( entity.getName() );
-			dto.setLogin( entity.getLogin() );
+			dto.setName( entity.getFullName() );
+			dto.setLogin( entity.getUsername() );
 			dto.setPassword( entity.getPassword() );
 			dto.setCreatedDate( entity.getCreatedDate() );
 		}
@@ -27,14 +27,14 @@ public class BlogUserConverter {
 		return dto;
 	}
 
-	public BlogUser transformDtoToEntity(BlogUserDTO dto) {
+	public Users transformDtoToEntity(BlogUserDTO dto) {
 		
-		BlogUser entity = new BlogUser();
+		Users entity = new Users();
 
 		if( dto != null ) {
 			entity.setId(dto.getId());
-			entity.setName( dto.getName() );
-			entity.setLogin( dto.getLogin() );
+			entity.setFullName( dto.getName() );
+			entity.setUsername( dto.getLogin() );
 			entity.setPassword( dto.getPassword() );
 			entity.setCreatedDate( dto.getCreatedDate() );
 		}

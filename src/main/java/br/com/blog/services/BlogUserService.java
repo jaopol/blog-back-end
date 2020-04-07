@@ -2,7 +2,7 @@ package br.com.blog.services;
 
 import java.util.Optional;
 
-import br.com.blog.model.BlogUser;
+import br.com.blog.model.Users;
 
 
 /**
@@ -16,8 +16,8 @@ public interface BlogUserService {
 	 * @param blogUser
 	 * @return
 	 */
-	Optional<BlogUser>  addBlogUser( BlogUser blogUser );
+	Optional<Users>  addBlogUser( Users blogUser );
 	
-	Optional<BlogUser>  findByLogin( String login );
+	Optional<Users>  findByLogin( String login );
 	
 }

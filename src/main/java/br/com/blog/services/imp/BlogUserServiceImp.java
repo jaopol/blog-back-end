@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.blog.model.BlogUser;
+import br.com.blog.model.Users;
 import br.com.blog.repositories.BlogUserRepository;
 import br.com.blog.services.BlogUserService;
 
@@ -24,7 +24,7 @@ public class BlogUserServiceImp implements BlogUserService {
 	 *Grava um usuário do blog
 	 */
 	@Override
-	public Optional<BlogUser> addBlogUser(BlogUser blogUser) {
+	public Optional<Users> addBlogUser( Users blogUser ) {
 		return Optional.ofNullable( this.blogUserRepository.save( blogUser ) );
 	}
 
@@ -33,7 +33,7 @@ public class BlogUserServiceImp implements BlogUserService {
 	 *Reupera o usuario pelo login
 	 */
 	@Override
-	public Optional<BlogUser> findByLogin(String login) {
+	public Optional<Users> findByLogin(String login) {
 		return Optional.ofNullable( this.blogUserRepository.findByLogin( login ) );
 	}
 

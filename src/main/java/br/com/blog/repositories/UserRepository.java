@@ -7,10 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import br.com.blog.model.Users;
 
+/**
+ * @author jp
+ *  Interface para JWT
+ */
 @Repository
-public interface BlogUserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 	
-	@Query( "SELECT obj FROM Users obj WHERE obj.username =:login " )
-	Users findByLogin( @Param("login") String login );
+	@Query( "SELECT obj FROM Users obj WHERE obj.username =:username " )
+	Users findByUsername( @Param("username") String username );
 
 }

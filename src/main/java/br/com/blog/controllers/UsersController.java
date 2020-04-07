@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api( value = "API blog - User")
 @RestController
-@RequestMapping( "/api/v1/user" )
+@RequestMapping( "/users" )
 public class UsersController {
 	
 	@Autowired

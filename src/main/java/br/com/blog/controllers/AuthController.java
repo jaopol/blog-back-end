@@ -26,7 +26,7 @@ import lombok.var;
 
 @Api( value = "Autentição Blog") 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
 	
 	@Autowired
@@ -46,7 +46,7 @@ public class AuthController {
 			String username = data.getUsername();
 			String pasword = data.getPassword();
 			
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken( username, pasword ) );
+			authenticationManager.authenticate( new UsernamePasswordAuthenticationToken( username, pasword ) );
 			
 			var user = repository.findByUsername( username );
 			
@@ -55,7 +55,7 @@ public class AuthController {
 			if( user != null ) {
 				token = tokenProvider.createToken( username, user.getRoles() );
 			} else {
-				throw new UsernameNotFoundException( "Login " + username + " not found!" );
+				throw new UsernameNotFoundException( "Username " + username + " não encontrado!" );
 			}
 			
 			Map<Object, Object> model = new HashMap<>();
@@ -64,7 +64,7 @@ public class AuthController {
 			return ok( model );
 		} 
 		catch( AuthenticationException e ) {
-			throw new BadCredentialsException( "Invalid username/password supplied!" );
+			throw new BadCredentialsException( "Usuário ou senha inválidos!" );
 		}
 	}
 }

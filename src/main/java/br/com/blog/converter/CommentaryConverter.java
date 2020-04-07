@@ -17,7 +17,7 @@ public class CommentaryConverter {
 	private UserPostConverter userPostConverter;
 	
 	@Autowired
-	private UsersConverter blogUserConverter;
+	private BlogUsersConverter blogUserConverter;
 
 	public CommentaryDTO transformEntityToDto( Commentary entity ) {
 

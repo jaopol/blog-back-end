@@ -10,7 +10,7 @@ import br.com.blog.model.Users;
  *
  */
 @Component
-public class UsersConverter {
+public class BlogUsersConverter {
 
 	public BlogUserDTO transformEntityToDto(Users entity) {
 

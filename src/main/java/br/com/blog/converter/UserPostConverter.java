@@ -14,7 +14,7 @@ import br.com.blog.model.UserPost;
 public class UserPostConverter {
 	
 	@Autowired
-	private UsersConverter blogUserConverter;
+	private BlogUsersConverter blogUserConverter;
 
 	public UserPostDTO transformEntityToDto( UserPost entity ) {
 

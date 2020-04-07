@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.blog.converter.UsersConverter;
+import br.com.blog.converter.BlogUsersConverter;
 import br.com.blog.dtos.BlogUserDTO;
 import br.com.blog.model.Users;
 import br.com.blog.response.Response;
@@ -26,7 +26,7 @@ public class UsersController {
 	private BlogUserService blgoUserService;
 	
 	@Autowired
-	private UsersConverter blogUserConverter;
+	private BlogUsersConverter blogUserConverter;
 
 	@ApiOperation( value = "Grava um usuário no blog" )
 	@PostMapping( name="/add" )
